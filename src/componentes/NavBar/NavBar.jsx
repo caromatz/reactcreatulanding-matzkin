@@ -6,9 +6,10 @@ import "./NavBar.css";
 const NavBar = () => {
     return (
       <header>
+         {/* Logo */}
+         <img src="/images/logo.png" alt="Logo" className="logo" />
         <nav>
-          {/* Logo */}
-          <img src="/images/logo.png" alt="Logo" className="logo" />
+         
           <ul>
             <li>Maquillajes</li>
             <li>Cremas</li>
