@@ -4,7 +4,7 @@ Este proyecto es una tienda online de calzado moderno hecho con React. Permite v
 
 ---
 
-## 🚀 Tecnologías utilizadas
+## Tecnologías utilizadas
 
 - Vite
 - React
@@ -25,4 +25,12 @@ Este proyecto es una tienda online de calzado moderno hecho con React. Permite v
 - Checkout (finalización de compra)
 - Notificaciones interactivas
 - Indicador de carga (Loader)
+
+---
+
+## Deploy en Netlify
+
+El proyecto está desplegado y accesible en vivo aquí:
+
+https://68330f1090065697cc0ada63--warm-bienenstitch-c6601a.netlify.app/
 
