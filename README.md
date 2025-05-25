@@ -32,5 +32,5 @@ Este proyecto es una tienda online de calzado moderno hecho con React. Permite v
 
 El proyecto está desplegado y accesible en vivo aquí:
 
-https://68330f1090065697cc0ada63--warm-bienenstitch-c6601a.netlify.app/
+https://warm-bienenstitch-c6601a.netlify.app/
 
