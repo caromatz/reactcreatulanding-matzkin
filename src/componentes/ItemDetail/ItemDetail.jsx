@@ -1,16 +1,26 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import ItemCount from "../ItemCount/ItemCount";
+import { CarritoContext } from "../../context/CarritoContext";
+import { toast } from "react-toastify";
 
 const ItemDetail = ({ producto }) => {
   const { nombre, descripcion, precio, categoria, imagen, stock } = producto;
-  const [cantidad, setCantidad] = useState(0); // cantidad de productos, empieza en 0
-  const [agregado, setAgregado] = useState(false); //  para saber si se ha agregado al carrito
+  const [cantidad, setCantidad] = useState(0);
+  const [agregado, setAgregado] = useState(false);
 
-  const handleAdd = (cantidad) => {
-    setCantidad(cantidad);
+  const { agregarAlCarrito } = useContext(CarritoContext);
+
+  const handleAdd = (cantidadSeleccionada) => {
+    setCantidad(cantidadSeleccionada);
     setAgregado(true);
-    console.log(`Agregaste ${cantidad} unidades de ${nombre}`);
+    agregarAlCarrito(producto, cantidadSeleccionada);
+
+    toast.success("Producto agregado al carrito", {
+      position: "top-right",
+      autoClose: 1500,
+      theme: "dark",
+    });
   };
 
   return (
@@ -31,15 +41,10 @@ const ItemDetail = ({ producto }) => {
         <strong>Categoría:</strong> {categoria}
       </p>
 
-      {/* Si agregado es true y cantidad es mayor que 0, mostrar enlace al carrito */}
-      {agregado ? (
-        cantidad > 0 ? (
-          <Link to="/carrito">
-            <button>Ir al carrito</button>
-          </Link>
-        ) : (
-          <ItemCount stock={stock} initial={0} onAdd={handleAdd} />
-        )
+      {agregado && cantidad > 0 ? (
+        <Link to="/cart">
+          <button>Ir al carrito</button>
+        </Link>
       ) : (
         <ItemCount stock={stock} initial={0} onAdd={handleAdd} />
       )}

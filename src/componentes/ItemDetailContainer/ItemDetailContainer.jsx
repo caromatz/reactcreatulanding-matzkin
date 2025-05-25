@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getProductoById } from "../asyncmock.js";
 import ItemDetail from "../ItemDetail/ItemDetail";
 import "./ItemDetailContainer.css";
+import { db } from "../../services/config";
+import { getDoc, doc } from "firebase/firestore";
 
 const ItemDetailContainer = () => {
   const { id } = useParams();
@@ -11,23 +12,30 @@ const ItemDetailContainer = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    setLoading(true);
-    setError(null);
+    const docRef = doc(db, "productos", id);
 
-    getProductoById(id)
-      .then((data) => {
-        if (data) {
-          setProducto(data);
+    getDoc(docRef)
+      .then((res) => {
+        if (res.exists()) {
+          const data = res.data();
+          const productoCompleto = { id: res.id, ...data };
+          setProducto(productoCompleto);
         } else {
           setError("Producto no encontrado.");
         }
       })
-      .catch(() => setError("Hubo un error al cargar el producto."))
-      .finally(() => setLoading(false));
+      .catch((err) => {
+        console.error("Error al obtener el producto:", err);
+        setError("Hubo un problema al cargar el producto.");
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }, [id]);
 
   if (loading) return <p>Cargando detalle...</p>;
   if (error) return <p>{error}</p>;
+  if (!producto) return null;
 
   return (
     <div className="item-detail-container">

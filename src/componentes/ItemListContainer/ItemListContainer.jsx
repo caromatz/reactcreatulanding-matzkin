@@ -1,39 +1,46 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getProductos, getProductosByCategoria } from "../asyncmock.js";
 import ItemList from "../ItemList/ItemList";
+import Loader from "../Loader/Loader";
 import "./ItemListContainer.css";
+import { db } from "../../services/config";
+import { collection, getDocs, query, where } from "firebase/firestore";
 
 const ItemListContainer = ({ welcomeMessage }) => {
   const { categoriaId } = useParams();
   const [productos, setProductos] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     setLoading(true);
-    setError(null);
 
-    const fetchProductos = categoriaId ? getProductosByCategoria : getProductos;
+    const productosRef = collection(db, "productos");
+    const consulta = categoriaId
+      ? query(productosRef, where("categoria", "==", categoriaId))
+      : productosRef;
 
-    fetchProductos(categoriaId)
-      .then((data) => {
-        setProductos(data);
+    getDocs(consulta)
+      .then((res) => {
+        const nuevosProductos = res.docs.map((doc) => {
+          const data = doc.data();
+          return { id: doc.id, ...data };
+        });
+        setProductos(nuevosProductos);
       })
-      .catch((err) => {
+      .catch((error) => {
+        console.error("Error al cargar productos:", error);
         setError("Hubo un problema al cargar los productos.");
-        console.error(err);
       })
       .finally(() => setLoading(false));
   }, [categoriaId]);
 
-  if (loading) return <p>Cargando productos...</p>;
   if (error) return <p>{error}</p>;
 
   return (
     <div className="item-list-container">
       <h2>{categoriaId ? `Categoría: ${categoriaId}` : welcomeMessage}</h2>
-      <ItemList productos={productos} />
+      {loading ? <Loader /> : <ItemList productos={productos} />}
     </div>
   );
 };

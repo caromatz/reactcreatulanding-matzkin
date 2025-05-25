@@ -2,6 +2,7 @@
   position: relative;
   display: inline-block;
   cursor: pointer;
+  color: #ff00cc;
 }
 
 .cart-widget i {
@@ -9,5 +10,5 @@
 }
 
 .cart-widget i:hover {
-  color: #000;
+  color: #913e5b;
 }

@@ -16,7 +16,7 @@ const ItemCount = ({ stock, initial = 1, onAdd }) => {
   };
 
   const handleAgregar = () => {
-    onAdd(cantidad); // esta función la vas a definir en el padre
+    onAdd(cantidad);
   };
 
   return (

@@ -1,16 +1,19 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
+import { CarritoContext } from "../../context/CarritoContext";
+import { Link } from "react-router-dom";
 import "./CartWidget.css";
 
 const CartWidget = () => {
-  const [cartItems, setCartItems] = useState(0);
-
-  const addItemToCart = () => {
-    setCartItems(cartItems + 1);
-  };
+  const { cantidadTotal } = useContext(CarritoContext);
 
   return (
     <div className="cart-widget">
-      <i className="bi bi-cart" onClick={addItemToCart}></i>
+      <Link to="/cart">
+        <i className="bi bi-cart"></i>
+        {cantidadTotal > 0 && (
+          <span className="cart-count">{cantidadTotal}</span>
+        )}
+      </Link>
     </div>
   );
 };

@@ -8,7 +8,7 @@ const ItemList = ({ productos }) => {
         <p>No hay productos disponibles en esta categoría.</p>
       ) : (
         productos.map((producto) => (
-          <Item key={producto.id} producto={producto} /> // Paso cada producto al componente Item
+          <Item key={producto.id} producto={producto} /> 
         ))
       )}
     </div>
